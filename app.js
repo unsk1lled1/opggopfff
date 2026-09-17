@@ -125,7 +125,7 @@ function renderCountdown(value) {
       <div class="countdown-dial" aria-hidden="true">
         <svg viewBox="0 0 240 240" focusable="false"><circle class="countdown-track" cx="120" cy="120" r="108"></circle><circle class="countdown-progress" cx="120" cy="120" r="108"></circle></svg>
         <div class="countdown-orbit countdown-orbit-outer"></div><div class="countdown-orbit countdown-orbit-inner"></div>
-        <div class="countdown-center"><span class="countdown-number">${value}</span><span class="countdown-scales">⚖</span></div>
+        <div class="countdown-center"><span class="countdown-number">${value}</span></div>
       </div>
       <p class="countdown-cue">${cue}</p>
       <div class="countdown-handoff">

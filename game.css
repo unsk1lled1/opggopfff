@@ -217,22 +217,14 @@
 
 .countdown-number {
     grid-area: 1 / 1;
+    position: relative;
+    top: -.07em;
     color: #f0d59c;
     font: 400 clamp(82px, 14vh, 118px)/1 var(--serif);
     letter-spacing: -.07em;
     padding-right: .07em;
     text-shadow: 0 3px 0 #715d36, 0 0 35px #e3c99535;
     animation: countdown-number .9s cubic-bezier(.16, .8, .22, 1) both
-}
-
-.countdown-scales {
-    grid-area: 1 / 1;
-    align-self: end;
-    margin-bottom: 15%;
-    color: #d3b77d;
-    font-size: clamp(15px, 2.4vh, 21px);
-    opacity: .8;
-    animation: countdown-emblem .9s ease both
 }
 
 .countdown-cue {
@@ -337,11 +329,6 @@
     24% { opacity: 1 }
     72% { opacity: 1; transform: scale(1); filter: blur(0) }
     100% { opacity: .84; transform: scale(.92); filter: blur(1px) }
-}
-
-@keyframes countdown-emblem {
-    from { opacity: 0; transform: translateY(8px) }
-    40%, to { opacity: .8; transform: none }
 }
 
 @keyframes countdown-cue {
