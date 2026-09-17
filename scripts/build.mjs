@@ -3,7 +3,7 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {validateBank} from '../engine.js';
 const root = path.resolve(import.meta.dirname,'..');
-const files = ['index.html','styles.css','game.css','oral.css','app.js','engine.js','questions.json','questions.schema.json'];
+const files = ['index.html','styles.css','game.css','oral.css','app.js','sound.js','engine.js','questions.json','questions.schema.json'];
 const bank = validateBank(JSON.parse(await fs.readFile(path.join(root,'questions.json'),'utf8')));
 const questionCount = Object.values(bank.questionSets).reduce((sum,qs)=>sum+qs.length,0);
 const demo = questionCount === 0;

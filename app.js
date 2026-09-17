@@ -1,4 +1,5 @@
 import { STORAGE_KEY, validateBank, makeTurns, fingerprint, newSession, answer, advance, summarize, snapshot, restoreSession, questionMode, questionSetKey, revealOral, gradeOral } from './engine.js';
+import { sound } from './sound.js';
 
 const app = document.querySelector('#app');
 const modal = document.querySelector('#modal');
@@ -139,6 +140,18 @@ function renderCountdown(value) {
   app.focus({ preventScroll: true });
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
+function updateSoundButton() {
+  const btn = document.querySelector('.sound-toggle');
+  if (!btn) return;
+  const muted = sound.muted;
+  btn.classList.toggle('is-muted', muted);
+  btn.setAttribute('aria-label', muted ? 'Звук: выключен' : 'Звук: включён');
+  btn.setAttribute('title', muted ? 'Включить звук' : 'Выключить звук');
+  const icon = btn.querySelector('.sound-icon');
+  if (icon) icon.textContent = muted ? '🔇' : '🔊';
+  const label = btn.querySelector('.sound-label');
+  if (label) label.textContent = muted ? 'Звук выкл' : 'Звук';
+}
 async function start() {
   if (countdownActive) return;
   notice('');
@@ -150,10 +163,12 @@ async function start() {
   setPageChromeInactive(true);
   for (let value = 3; value >= 1; value -= 1) {
     if (run !== countdownRun) return;
+    sound.countdownTick(value);
     renderCountdown(value);
     await wait(1000);
   }
   if (run !== countdownRun) return;
+  sound.countdownStart();
   countdownActive = false;
   document.body.classList.remove('countdown-active');
   setPageChromeInactive(false);
@@ -164,24 +179,51 @@ document.addEventListener('click', event => {
   if (!target) return;
   const action = target.dataset.action;
   if (target.tagName === 'A') event.preventDefault();
-  if (action === 'rules') { openRules(); return; }
-  if (action === 'close-modal') { modal.close(); return; }
+  if (action === 'toggle-sound') {
+    sound.toggleMute();
+    updateSoundButton();
+    return;
+  }
+  if (action === 'rules') { sound.click(); openRules(); return; }
+  if (action === 'close-modal') { sound.click(); modal.close(); return; }
   if (!data) return;
-  if (action === 'home') show('home');
+  if (action === 'home') { sound.click(); show('home'); }
   if (action === 'start') start();
-  if (action === 'resume') show(session.status === 'completed' ? 'results' : 'game');
-  if (action === 'restart') restartDialog();
+  if (action === 'resume') { sound.click(); show(session.status === 'completed' ? 'results' : 'game'); }
+  if (action === 'restart') { sound.click(); restartDialog(); }
   if (action === 'confirm-restart') { modal.close(); start(); }
   if (action === 'answer' && screen === 'game') {
     const selected = session.optionOrders[session.cursor][Number(target.dataset.option)];
-    if (answer(session, turns, selected)) refreshAfterAction(session.responses[session.cursor].correct, '[data-action="next"]');
+    if (answer(session, turns, selected)) {
+      const isCorrect = session.responses[session.cursor].correct;
+      if (isCorrect) sound.correct();
+      else sound.wrong();
+      refreshAfterAction(isCorrect, '[data-action="next"]');
+    }
   }
-  if (action === 'reveal-oral' && screen === 'game' && revealOral(session, turns)) refreshAfterAction(false, '[data-action="grade-oral"]');
-  if (action === 'grade-oral' && screen === 'game' && gradeOral(session, turns, target.dataset.correct === 'true')) refreshAfterAction(session.responses[session.cursor].correct, '[data-action="next"]');
-  if (action === 'next' && screen === 'game' && advance(session, turns)) { persist(); show(session.status === 'completed' ? 'results' : 'game'); }
-  if (action === 'review' && session?.status === 'completed') { filter = 'all'; show('review'); }
-  if (action === 'results' && session?.status === 'completed') show('results');
-  if (action === 'filter' && screen === 'review') { filter = target.dataset.filter; renderReview(); app.querySelector(`[data-filter="${filter}"]`).focus({ preventScroll: true }); }
+  if (action === 'reveal-oral' && screen === 'game' && revealOral(session, turns)) {
+    sound.reveal();
+    refreshAfterAction(false, '[data-action="grade-oral"]');
+  }
+  if (action === 'grade-oral' && screen === 'game' && gradeOral(session, turns, target.dataset.correct === 'true')) {
+    const isCorrect = session.responses[session.cursor].correct;
+    if (isCorrect) sound.correct();
+    else sound.wrong();
+    refreshAfterAction(isCorrect, '[data-action="next"]');
+  }
+  if (action === 'next' && screen === 'game' && advance(session, turns)) {
+    persist();
+    if (session.status === 'completed') {
+      sound.finish();
+      show('results');
+    } else {
+      sound.click();
+      show('game');
+    }
+  }
+  if (action === 'review' && session?.status === 'completed') { sound.click(); filter = 'all'; show('review'); }
+  if (action === 'results' && session?.status === 'completed') { sound.click(); show('results'); }
+  if (action === 'filter' && screen === 'review') { sound.click(); filter = target.dataset.filter; renderReview(); app.querySelector(`[data-filter="${filter}"]`).focus({ preventScroll: true }); }
 });
 document.addEventListener('keydown', event => {
   if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || modal.open || screen !== 'game' || !/^[1-4]$/.test(event.key)) return;
@@ -213,6 +255,7 @@ async function init() {
     try { const restored = restoreSession(localStorage.getItem(STORAGE_KEY), turns, bankId); session = restored.session; if (restored.reason) notice(restored.reason); }
     catch { storageAvailable = false; notice('Сохранение недоступно в этом браузере. Прогресс будет доступен до обновления страницы.'); }
     show('home', false);
+    updateSoundButton();
     registerWebMCP();
   } catch (error) {
     app.innerHTML = `<section class="loading-error"><div class="eyebrow">БАНК ВОПРОСОВ</div><h1>Викторина пока недоступна</h1><p>${escape(location.protocol === 'file:' ? 'Запустите сайт локально командой npm start, затем откройте http://127.0.0.1:4173. Загрузка JSON требует локального веб-сервера.' : error.message)}</p><button class="button primary" onclick="location.reload()">Попробовать снова</button></section>`;
