@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#191a17">
+    <meta name="description" content="Парная проверка знаний по основам права. Два участника, вопросы по очереди и внимательная работа над ошибками.">
+    <title>Основы права — парная проверка знаний</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='9' fill='%23191a17'/%3E%3Cg fill='none' stroke='%23cfb67e' stroke-width='2'%3E%3Cpath d='M20 7v25M11 32h18M8 13h24M11 13l-5 12h10zM29 13l-5 12h10z'/%3E%3C/g%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="oral.css">
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true"></div>
+    <header class="site-header">
+      <a href="#" class="brand" aria-label="Основы права — главная" data-action="home">
+        <span class="brand-symbol" aria-hidden="true">⚖</span>
+        <span>ОСНОВЫ ПРАВА<small>ПАРНАЯ ПРОВЕРКА ЗНАНИЙ</small></span>
+      </a>
+      <nav aria-label="Основная навигация"><button class="text-button" data-action="rules"><span class="book-icon" aria-hidden="true">▤</span> Как играть <span aria-hidden="true">↗</span></button></nav>
+    </header>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <main id="app" tabindex="-1">
+      <section class="cover">
+        <div class="cover-copy"><div class="eyebrow"><span></span> ИНТЕРАКТИВНЫЙ ПРАКТИКУМ</div><h1>ОСНОВЫ<br><em>ПРАВА</em><span class="heading-dot">.</span></h1><p class="cover-subtitle">Парная проверка знаний</p><p class="cover-motto">Закон <span>•</span> Ответственность <span>•</span> Правосудие</p><div class="cover-rule"></div><p class="cover-format">100 вопросов <span>•</span> 2 участника <span>•</span> одна проверка знаний</p><div class="participants"><div class="participant-tile"><span class="avatar">КЕ</span><div><small>УЧАСТНИК 01</small><strong>Кадырбекова Еркеназ</strong><span>50 вопросов</span></div></div><div class="participant-tile"><span class="avatar">ТА</span><div><small>УЧАСТНИК 02</small><strong>Торгаутова Алсу</strong><span>50 вопросов</span></div></div></div><button class="button primary start-button" disabled>Загрузка викторины… <span>→</span></button><p class="demo-note">75 вопросов с вариантами · 25 устных вопросов</p></div>
+        <div class="cover-art" aria-hidden="true"><div class="art-halo"></div><div class="art-border"></div><span class="art-index">IUS · LEX · IUSTITIA</span><div class="art-caption"><span>ИСКУССТВО ЗНАТЬ ЗАКОН</span><p>В основе справедливости —<br><em>знание.</em></p></div></div>
+      </section>
+    </main>
+    <footer class="site-footer"><span>ЗНАНИЕ ЗАКОНА — ОСНОВА УВЕРЕННОСТИ</span><span class="footer-right">ОСНОВЫ ПРАВА <i></i> ПАРНАЯ РАБОТА</span></footer>
+    <dialog id="modal" aria-labelledby="modal-title"></dialog>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

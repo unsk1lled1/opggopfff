@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Банк вопросов — Основы права",
+  "type": "object",
+  "required": [
+    "players",
+    "questionSets"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "players": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-zA-Z0-9_-]*$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "questionSets": {
+      "type": "object",
+      "minProperties": 2,
+      "maxProperties": 2,
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/question"
+        }
+      },
+      "description": "forErkenaz и forAlsu: ключ for + id участника с заглавной первой буквой. Роли проверяются приложением."
+    }
+  },
+  "$defs": {
+    "question": {
+      "type": "object",
+      "required": [
+        "id",
+        "number",
+        "reader",
+        "respondent",
+        "question",
+        "correctAnswer"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "section": {
+          "type": "string",
+          "examples": [
+            "Публичное право",
+            "Уголовное право",
+            "Конституционное право",
+            "Административное право",
+            "Гражданское право",
+            "Правоохранительные органы",
+            "Ответственность"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "description": "Метка темы. Если заданы section и category, интерфейс показывает category."
+        },
+        "reader": {
+          "type": "string"
+        },
+        "respondent": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "options": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "correctAnswer": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Эталон устного ответа или точное значение правильного варианта. Для choice сверяется с options и correctIndex."
+        },
+        "mode": {
+          "enum": [
+            "choice",
+            "oral"
+          ],
+          "default": "choice"
+        },
+        "correctIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "Индекс правильного ответа от 0. При наличии порядок options сохраняется."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "oral"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "options": {
+                "maxItems": 0
+              }
+            },
+            "not": {
+              "required": [
+                "correctIndex"
+              ]
+            }
+          },
+          "else": {
+            "required": [
+              "options"
+            ],
+            "properties": {
+              "options": {
+                "minItems": 4,
+                "maxItems": 4
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

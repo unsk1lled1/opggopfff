@@ -1,0 +1,21 @@
+.oral-badge{display:inline-flex;margin-top:24px;padding:7px 11px;border:1px solid #c5aa7366;border-radius:3px;color:var(--gold-bright);background:#c5aa730c;font-size:12px;letter-spacing:.14em;line-height:1.5}
+.oral-badge+h2{margin-top:17px}
+.oral-prompt{padding:26px 24px;border:1px solid #c5aa7338;background:linear-gradient(120deg,#c5aa730c,transparent);border-radius:4px;display:flex;align-items:center;gap:20px}
+.oral-prompt-symbol{font:35px var(--serif);color:var(--gold)}
+.oral-prompt p{flex:1;margin:0;color:var(--ink);font:19px/1.6 var(--serif)}
+.oral-prompt p>span{font:14px/1.7 var(--sans);color:var(--muted)}
+.oral-prompt .button{flex-shrink:0}
+.oral-revealed{padding:25px 28px;background:var(--paper);color:var(--paper-ink);border:1px solid var(--gold);border-radius:4px;animation:page-in .3s ease-out}
+.oral-answer-label{color:#746345;display:block;font:12px/1.5 var(--sans);text-transform:uppercase;letter-spacing:.14em;margin-bottom:12px}
+.oral-revealed>p{font:21px/1.7 var(--serif);margin:0;overflow-wrap:anywhere;white-space:pre-line}
+.oral-assessment{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:23px}
+.oral-assessment>p{color:var(--muted);font-size:14px;line-height:1.9;margin:0}
+.oral-assessment strong{font-weight:500;color:var(--ink)}
+.oral-grade-buttons{display:flex;gap:12px;flex-shrink:0}
+.button.oral-correct{color:#d0dcb7;background:#8c9c6225;border-color:#8c9c627a}
+.button.oral-incorrect{color:#e0b8b0;background:#aa706318;border-color:#aa70636b}
+.button.oral-correct:hover{background:#8c9c6240;border-color:#b4c491}
+.button.oral-incorrect:hover{background:#aa706330;border-color:#c99185}
+.turn-line>span:first-child,.turn-line>strong{overflow-wrap:anywhere}
+.filter-button{max-width:100%;overflow-wrap:anywhere}
+@media(max-width:760px){.oral-badge{font-size:11px;margin-top:20px}.oral-prompt{flex-direction:column;text-align:center;padding:22px 16px;gap:15px}.oral-prompt p{font-size:18px}.oral-prompt p>span{font-size:13px}.oral-prompt .button{width:100%}.oral-revealed{padding:20px 17px}.oral-revealed>p{font-size:18px}.oral-assessment{flex-direction:column;align-items:stretch;gap:16px}.oral-assessment>p{font-size:13px}.oral-grade-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}.oral-grade-buttons>.button{padding:12px 8px;gap:6px}.turn-line{gap:5px 9px}.turn-line>span:first-child,.turn-line>strong{flex-basis:100%;text-align:center}.turn-arrow{display:none}}
